@@ -7,20 +7,33 @@
     <title>@yield('title', 'Tanam Pepaya')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --green: #198754; --green2: #28a745; }
-        body { background: #f6faf7; overflow-x: hidden; }
+        :root { 
+            --green: #198754; 
+            --green2: #28a745; 
+            --sidebar-width: 280px;
+            --bg-light: #f8fbf9;
+        }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-light); 
+            overflow-x: hidden; 
+            color: #2d3436;
+        }
         .app-shell { height: 100vh; display: flex; }
         .sidebar {
-            background: linear-gradient(180deg, var(--green), #157347);
+            background: linear-gradient(180deg, #11623d 0%, #198754 100%);
             color: #fff;
-            --bs-offcanvas-width: 290px;
-            box-shadow: 0 18px 45px rgba(0,0,0,.18);
+            --bs-offcanvas-width: var(--sidebar-width);
+            box-shadow: 10px 0 30px rgba(0,0,0,.04);
+            border-right: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         @media (min-width: 992px) {
             body { overflow: hidden; }
             .sidebar {
-                width: 270px;
+                width: var(--sidebar-width);
                 position: fixed;
                 top: 0;
                 bottom: 0;
@@ -29,201 +42,215 @@
                 overflow-x: hidden;
             }
         }
-        .sidebar::-webkit-scrollbar { width: 10px; }
-        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.18); border-radius: 999px; }
-        .sidebar::-webkit-scrollbar-track { background: transparent; }
-        .sidebar-content { position: relative; z-index: 1; min-height: 100%; display: flex; flex-direction: column; }
-        .sidebar-header {
-            position: sticky;
-            top: 0;
-            z-index: 6;
-            padding: 14px 12px 12px;
-            background: linear-gradient(180deg, rgba(25,135,84,1), rgba(21,115,71,1));
-            border-bottom: 1px solid rgba(255,255,255,.14);
+        .sidebar::-webkit-scrollbar { width: 6px; }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 999px; }
+        .sidebar-content { position: relative; z-index: 1; min-height: 100%; display: flex; flex-direction: column; padding: 1.5rem 1rem; }
+        
+        .brand-section {
+            padding: 0.5rem 0.5rem 2rem 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        .logo-mark {
-            width: 46px;
-            height: 46px;
-            border-radius: 16px;
-            background: rgba(255,255,255,.18);
-            border: 1px solid rgba(255,255,255,.18);
+        .logo-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 12px 22px rgba(0,0,0,.18);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
         }
-        .logo-mark i { font-size: 22px; color: #fff; }
-        .sidebar-watermark {
-            position: absolute;
-            inset: 64px 0 140px;
+        .logo-box i { font-size: 24px; color: #fff; }
+        .brand-text { line-height: 1.2; }
+        .brand-name { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; }
+        .brand-sub { font-size: 0.75rem; opacity: 0.8; font-weight: 500; }
+
+        .nav-section-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            opacity: 0.5;
+            margin: 1.5rem 0 0.75rem 0.75rem;
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.7);
+            font-weight: 600;
+            font-size: 0.925rem;
+            padding: 0.875rem 1rem;
+            border-radius: 12px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            z-index: 0;
+            gap: 12px;
+            transition: all 0.2s;
+            margin-bottom: 4px;
         }
-        .sidebar-watermark .wm {
-            width: 120px;
-            height: 120px;
-            border-radius: 26px;
-            background: rgba(255,255,255,.08);
-            border: 1px solid rgba(255,255,255,.14);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform: rotate(-10deg);
-            filter: blur(.0px);
-            opacity: .16;
+        .sidebar .nav-link i { font-size: 1.25rem; opacity: 0.8; transition: all 0.2s; }
+        .sidebar .nav-link:hover {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            transform: translateX(4px);
         }
-        .sidebar-watermark i { font-size: 60px; color: #fff; opacity: .95; }
-        .sidebar .brand { font-weight: 800; letter-spacing: .2px; line-height: 1.05; }
-        .sidebar a { color: rgba(255,255,255,.9); text-decoration: none; }
-        .sidebar .nav-link { border-radius: 14px; padding: .72rem .85rem; display: flex; gap: .72rem; align-items: center; }
-        .sidebar .nav-link i { width: 18px; text-align: center; opacity: .95; }
-        .sidebar .nav-link:hover { background: rgba(255,255,255,.12); transform: translateX(2px); transition: .15s; }
+        .sidebar .nav-link:hover i { opacity: 1; }
         .sidebar .nav-link.active {
-            background: rgba(255,255,255,.22);
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,.14);
-            position: relative;
+            background: #fff;
+            color: var(--green);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-        .sidebar .nav-link.active::before {
-            content: '';
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 18px;
-            border-radius: 999px;
-            background: rgba(255,255,255,.95);
-        }
+        .sidebar .nav-link.active i { opacity: 1; color: var(--green); }
+
         .content { flex: 1; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
         @media (min-width: 992px) {
-            .content { margin-left: 270px; }
+            .content { margin-left: var(--sidebar-width); }
         }
-        .topbar { background: #fff; border-bottom: 1px solid rgba(0,0,0,.06); position: sticky; top: 0; z-index: 1020; }
-        .card-soft { border: 0; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,.06); }
-        .card-soft:hover { transform: translateY(-2px); transition: .15s; }
-        .stat-card { background: linear-gradient(135deg, rgba(25,135,84,.95), rgba(40,167,69,.88)); color: #fff; }
-        .badge-soft { border-radius: 999px; padding: .35rem .6rem; }
-        .badge-aktif { background: rgba(25,135,84,.12); color: #198754; }
-        .badge-panen { background: rgba(255,193,7,.18); color: #b58100; }
-        .badge-selesai { background: rgba(13,110,253,.12); color: #0d6efd; }
-        .table thead th { background: #f2f7f3; border-bottom: 0; }
-        .sidebar-user {
-            background: rgba(255,255,255,.10);
-            border: 1px solid rgba(255,255,255,.14);
+        
+        .topbar { 
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+            padding: 0.75rem 1.5rem;
+        }
+        .card-soft { 
+            border: 0; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card-soft:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(0,0,0,0.06); }
+        
+        .user-card-sidebar {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 16px;
-            padding: 12px;
+            padding: 1rem;
+            margin-top: auto;
         }
-        @media (max-width: 991.98px) {
-            .app-shell { height: 100vh; }
-            main { -webkit-overflow-scrolling: touch; }
+        
+        .btn-logout {
+            background: rgba(255,255,255,0.15);
+            border: 0;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
         }
+        .btn-logout:hover { background: rgba(255,255,255,0.25); color: #fff; }
+
+        main { padding: 2rem; }
+        @media (max-width: 768px) {
+            main { padding: 1rem; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #dcdde1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #bdc3c7; }
     </style>
     @stack('head')
 </head>
 <body>
 <div class="app-shell">
-    <aside class="sidebar offcanvas-lg offcanvas-start p-3" tabindex="-1" id="appSidebar" aria-labelledby="appSidebarLabel">
-        <div class="sidebar-watermark">
-            <div class="wm"><i class="bi bi-leaf-fill"></i></div>
-        </div>
-
+    <aside class="sidebar offcanvas-lg offcanvas-start shadow-sm" tabindex="-1" id="appSidebar">
         <div class="sidebar-content">
-            <div class="offcanvas-header d-lg-none px-0 pt-0">
-                <div class="d-flex align-items-center gap-2">
-                    <div class="logo-mark">
-                        <i class="bi bi-flower1"></i>
-                    </div>
-                    <div class="brand" id="appSidebarLabel">
-                        <div>Tanam Pepaya</div>
-                        <div class="small opacity-75 fw-semibold">Sistem Tanam & Panen</div>
-                    </div>
+            <div class="brand-section">
+                <div class="logo-box">
+                    <i class="bi bi-flower1"></i>
                 </div>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#appSidebar" aria-label="Close"></button>
+                <div class="brand-text">
+                    <div class="brand-name">Tanam Pepaya</div>
+                    <div class="brand-sub text-uppercase">Management System</div>
+                </div>
+                <button type="button" class="btn-close btn-close-white d-lg-none ms-auto" data-bs-dismiss="offcanvas" data-bs-target="#appSidebar"></button>
             </div>
 
-            <div class="sidebar-header d-none d-lg-block">
-                <div class="d-flex align-items-center gap-2">
-                    <div class="logo-mark">
-                        <i class="bi bi-flower1"></i>
-                    </div>
-                    <div class="brand">
-                        <div>Tanam Pepaya</div>
-                        <div class="small opacity-75 fw-semibold">Sistem Tanam & Panen</div>
-                    </div>
-                </div>
-            </div>
-
-            <nav class="nav nav-pills flex-column gap-1">
+            <div class="nav-section-label">Main Menu</div>
+            <nav class="nav nav-pills flex-column">
                 <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                    <i class="bi bi-speedometer2"></i>
-                    <span class="text-label">Dashboard</span>
+                    <i class="bi bi-grid-1x2-fill"></i>
+                    <span>Dashboard</span>
                 </a>
                 <a class="nav-link {{ request()->routeIs('tanaman.*') ? 'active' : '' }}" href="{{ route('tanaman.index') }}">
-                    <i class="bi bi-flower1"></i>
-                    <span class="text-label">Data Tanaman</span>
+                    <i class="bi bi-tree-fill"></i>
+                    <span>Data Tanaman</span>
                 </a>
                 <a class="nav-link {{ request()->routeIs('notifikasi.*') ? 'active' : '' }}" href="{{ route('notifikasi.index') }}">
                     <i class="bi bi-whatsapp"></i>
-                    <span class="text-label">Notifikasi</span>
+                    <span>Notifikasi</span>
                 </a>
                 <a class="nav-link {{ request()->routeIs('laporan.*') ? 'active' : '' }}" href="{{ route('laporan.index') }}">
-                    <i class="bi bi-clipboard-data"></i>
-                    <span class="text-label">Laporan</span>
+                    <i class="bi bi-bar-chart-fill"></i>
+                    <span>Laporan</span>
                 </a>
+
+                <div class="nav-section-label">Settings</div>
                 @if(auth()->user()->role === 'admin')
                     <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
-                        <i class="bi bi-people"></i>
-                        <span class="text-label">Data User</span>
+                        <i class="bi bi-people-fill"></i>
+                        <span>Manajemen User</span>
                     </a>
                 @endif
                 <a class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}" href="{{ route('profile.edit') }}">
-                    <i class="bi bi-person-circle"></i>
-                    <span class="text-label">Profil</span>
+                    <i class="bi bi-person-badge-fill"></i>
+                    <span>Profil Saya</span>
                 </a>
             </nav>
 
-            <div class="mt-auto pt-3 border-top border-white border-opacity-25">
-                <div class="sidebar-user">
-                    <div class="d-flex align-items-center gap-2">
-                        <div class="bg-white bg-opacity-25 rounded-3 d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
-                            <i class="bi bi-person-circle fs-4"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="small opacity-75">Login sebagai</div>
-                            <div class="fw-semibold text-truncate">{{ auth()->user()->name }}</div>
-                            <div class="small opacity-75 text-truncate">{{ auth()->user()->email }}</div>
-                        </div>
+            <div class="user-card-sidebar mt-5">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px; color: var(--green);">
+                        <i class="bi bi-person-fill fs-4"></i>
                     </div>
-                    <div class="mt-2 d-flex justify-content-between align-items-center">
-                        <div class="small opacity-75">Role</div>
-                        <span class="badge bg-white bg-opacity-25 border border-white border-opacity-25">{{ strtoupper(auth()->user()->role) }}</span>
+                    <div class="overflow-hidden">
+                        <div class="fw-bold text-truncate" style="font-size: 0.9rem;">{{ auth()->user()->name }}</div>
+                        <div class="small opacity-75 text-truncate" style="font-size: 0.75rem;">{{ auth()->user()->email }}</div>
                     </div>
                 </div>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn-logout w-100 d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Keluar Sistem</span>
+                    </button>
+                </form>
             </div>
         </div>
     </aside>
 
     <div class="content">
-        <div class="topbar px-3 py-2 d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center gap-2">
-                <button class="btn btn-success btn-sm d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#appSidebar" aria-controls="appSidebar">
-                    <i class="bi bi-list"></i>
+        <header class="topbar d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-light btn-sm d-lg-none rounded-3 shadow-sm border" type="button" data-bs-toggle="offcanvas" data-bs-target="#appSidebar">
+                    <i class="bi bi-list fs-5"></i>
                 </button>
-                <div class="fw-semibold">@yield('page_title', 'Dashboard')</div>
+                <div class="page-info">
+                    <h5 class="fw-bold mb-0" style="letter-spacing: -0.01em;">@yield('page_title', 'Dashboard')</h5>
+                    <div class="small text-muted d-none d-sm-block">{{ date('l, d F Y') }}</div>
+                </div>
             </div>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="btn btn-outline-success btn-sm">
-                    <i class="bi bi-box-arrow-right me-1"></i>Logout
-                </button>
-            </form>
-        </div>
+            
+            <div class="topbar-actions d-flex align-items-center gap-2">
+                <div class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fw-bold border border-success border-opacity-10">
+                    <i class="bi bi-shield-fill-check me-1"></i>
+                    {{ strtoupper(auth()->user()->role) }}
+                </div>
+            </div>
+        </header>
 
-        <main class="p-3 p-lg-4" style="overflow-y:auto; flex: 1;">
-            @yield('content')
+        <main style="overflow-y:auto; flex: 1;">
+            <div class="container-fluid">
+                @yield('content')
+            </div>
         </main>
     </div>
 </div>

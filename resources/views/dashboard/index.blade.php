@@ -4,152 +4,203 @@
 @section('page_title', 'Dashboard')
 
 @section('content')
-<div class="row g-3">
+<div class="welcome-header mb-4">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h3 class="fw-bold text-dark mb-1">Halo, {{ auth()->user()->name }}! 👋</h3>
+            <p class="text-muted mb-0">Selamat datang kembali di sistem pemantauan perkebunan pepaya Anda.</p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <a href="{{ route('tanaman.index') }}" class="btn btn-success px-4 py-2 rounded-3 shadow-sm">
+                <i class="bi bi-plus-lg me-2"></i>Tambah Tanaman
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
     <div class="col-12 col-md-6 col-xl-3">
-        <div class="card card-soft stat-card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <div class="small opacity-75">Total Data Tanaman</div>
-                        <div class="fs-3 fw-bold">{{ $totalTanaman }}</div>
+        <div class="card card-soft border-0 shadow-sm overflow-hidden" style="background: linear-gradient(135deg, #198754 0%, #11623d 100%); color: white;">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="bg-white bg-opacity-20 rounded-3 p-3">
+                        <i class="bi bi-tree-fill fs-3"></i>
                     </div>
-                    <div class="bg-white bg-opacity-25 rounded-3 p-2">
-                        <i class="bi bi-flower1 fs-4"></i>
+                    <div class="text-end">
+                        <div class="small opacity-75 fw-medium">Total Tanaman</div>
+                        <h2 class="fw-bold mb-0">{{ $totalTanaman }}</h2>
                     </div>
                 </div>
+                <div class="small opacity-75">Seluruh data tercatat</div>
             </div>
         </div>
     </div>
     <div class="col-12 col-md-6 col-xl-3">
-        <div class="card card-soft stat-card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <div class="small opacity-75">Tanaman Aktif</div>
-                        <div class="fs-3 fw-bold">{{ $tanamanAktif }}</div>
+        <div class="card card-soft border-0 shadow-sm overflow-hidden" style="background: linear-gradient(135deg, #0d6efd 0%, #084298 100%); color: white;">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="bg-white bg-opacity-20 rounded-3 p-3">
+                        <i class="bi bi-check-circle-fill fs-3"></i>
                     </div>
-                    <div class="bg-white bg-opacity-25 rounded-3 p-2">
-                        <i class="bi bi-check2-circle fs-4"></i>
+                    <div class="text-end">
+                        <div class="small opacity-75 fw-medium">Tanaman Aktif</div>
+                        <h2 class="fw-bold mb-0">{{ $tanamanAktif }}</h2>
                     </div>
                 </div>
+                <div class="small opacity-75 text-truncate">Sedang dalam perawatan</div>
             </div>
         </div>
     </div>
     <div class="col-12 col-md-6 col-xl-3">
-        <div class="card card-soft stat-card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <div class="small opacity-75">Jadwal Perawatan (7 hari)</div>
-                        <div class="fs-3 fw-bold">{{ $jadwalTanam }}</div>
+        <div class="card card-soft border-0 shadow-sm overflow-hidden" style="background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); color: white;">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="bg-white bg-opacity-20 rounded-3 p-3">
+                        <i class="bi bi-calendar-event-fill fs-3"></i>
                     </div>
-                    <div class="bg-white bg-opacity-25 rounded-3 p-2">
-                        <i class="bi bi-calendar2-week fs-4"></i>
+                    <div class="text-end">
+                        <div class="small opacity-75 fw-medium">Jadwal (7 Hari)</div>
+                        <h2 class="fw-bold mb-0">{{ $jadwalTanam }}</h2>
                     </div>
                 </div>
+                <div class="small opacity-75">Tugas perawatan mendatang</div>
             </div>
         </div>
     </div>
     <div class="col-12 col-md-6 col-xl-3">
-        <div class="card card-soft stat-card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <div class="small opacity-75">Estimasi Panen (30 hari)</div>
-                        <div class="fs-3 fw-bold">{{ $estimasiPanen }}</div>
+        <div class="card card-soft border-0 shadow-sm overflow-hidden" style="background: linear-gradient(135deg, #10b981 0%, #047857 100%); color: white;">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="bg-white bg-opacity-20 rounded-3 p-3">
+                        <i class="bi bi-basket3-fill fs-3"></i>
                     </div>
-                    <div class="bg-white bg-opacity-25 rounded-3 p-2">
-                        <i class="bi bi-basket fs-4"></i>
+                    <div class="text-end">
+                        <div class="small opacity-75 fw-medium">Panen (30 Hari)</div>
+                        <h2 class="fw-bold mb-0">{{ $estimasiPanen }}</h2>
                     </div>
                 </div>
+                <div class="small opacity-75">Estimasi masa panen</div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row g-3 mt-1">
+<div class="row g-4 mt-1">
     <div class="col-12 col-xl-8">
-        <div class="card card-soft">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <div class="fw-semibold">Grafik Pertumbuhan (Data Tanam / Bulan)</div>
-                    <div class="text-muted small">Chart.js</div>
+        <div class="card card-soft border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0">Statistik Penanaman</h5>
+                <div class="badge bg-light text-dark px-3 py-2 rounded-pill border">Per Bulan</div>
+            </div>
+            <div class="card-body p-4">
+                <div style="height: 300px; background: #f9fafb; border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 2px dashed #e5e7eb;">
+                    <div class="text-center">
+                        <i class="bi bi-graph-up fs-1 text-muted opacity-50"></i>
+                        <p class="text-muted mt-2">Grafik Pertumbuhan Muncul di Sini</p>
+                    </div>
                 </div>
-                <canvas id="growthChart" height="110"></canvas>
             </div>
         </div>
     </div>
     <div class="col-12 col-xl-4">
-        <div class="card card-soft">
-            <div class="card-body">
-                <div class="fw-semibold mb-2">Countdown Panen</div>
-                @if($countdownPanen)
-                    <div class="p-3 rounded-4" style="background: rgba(25,135,84,.08);">
-                        <div class="fw-bold">{{ $countdownPanen['nama'] }}</div>
-                        <div class="text-muted small">{{ $countdownPanen['lokasi'] }}</div>
-                        <div class="mt-2 d-flex align-items-center justify-content-between">
-                            <div class="small text-muted">Estimasi</div>
-                            <div class="fw-semibold">{{ $countdownPanen['estimasi'] }}</div>
+        <div class="card card-soft border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h5 class="fw-bold mb-0">Info Panen Terdekat</h5>
+            </div>
+            <div class="card-body p-4">
+                @if($panenTerdekat)
+                    <div class="next-harvest p-4 rounded-4 mb-4 text-center" style="background: rgba(25,135,84,0.05); border: 1px solid rgba(25,135,84,0.1);">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-flower1 fs-2"></i>
                         </div>
-                        <div class="mt-2">
-                            @if($countdownPanen['days'] > 0)
-                                <div class="display-6 fw-bold text-success">{{ $countdownPanen['days'] }}</div>
-                                <div class="text-muted">hari lagi</div>
+                        <h5 class="fw-bold mb-1">{{ $panenTerdekat->nama_tanaman }}</h5>
+                        <p class="text-muted small mb-3"><i class="bi bi-geo-alt-fill me-1"></i>{{ $panenTerdekat->lokasi }}</p>
+                        
+                        <div class="d-flex justify-content-between small text-muted mb-1">
+                            <span>Estimasi Panen</span>
+                            <span class="fw-bold text-dark">{{ $panenTerdekat->estimasi_panen->toDateString() }}</span>
+                        </div>
+                        <div class="progress rounded-pill mb-2" style="height: 8px;">
+                            @php
+                                $start = $panenTerdekat->tanggal_tanam;
+                                $end = $panenTerdekat->estimasi_panen;
+                                $total = $start->diffInDays($end) ?: 1;
+                                $passed = $start->diffInDays(now());
+                                $percent = min(100, max(0, ($passed / $total) * 100));
+                            @endphp
+                            <div class="progress-bar bg-success" style="width: {{ $percent }}%"></div>
+                        </div>
+                        <div class="text-center small">
+                            @if($percent >= 100)
+                                <span class="badge bg-success">Siap Panen!</span>
                             @else
-                                <div class="display-6 fw-bold text-warning">0</div>
-                                <div class="text-muted">sudah masuk masa panen</div>
+                                <span class="text-muted">{{ round($percent) }}% Menuju Panen</span>
                             @endif
                         </div>
                     </div>
                 @else
-                    <div class="text-muted">Belum ada data tanaman.</div>
+                    <div class="text-center py-5 text-muted">
+                        <i class="bi bi-info-circle fs-1 opacity-25"></i>
+                        <p class="mt-2 mb-0">Belum ada data panen.</p>
+                    </div>
                 @endif
-                <div class="mt-3">
-                    <a href="{{ route('tanaman.index') }}" class="btn btn-success w-100">
-                        <i class="bi bi-plus-circle me-1"></i>Tambah / Kelola Tanaman
-                    </a>
-                </div>
+                
+                <a href="{{ route('tanaman.index') }}" class="btn btn-outline-success w-100 rounded-3 py-2 fw-semibold">
+                    Kelola Semua Tanaman
+                </a>
             </div>
         </div>
     </div>
 </div>
 
-<div class="card card-soft mt-3">
-    <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-            <div class="fw-semibold">Tanaman Terbaru</div>
-            <a href="{{ route('tanaman.index') }}" class="btn btn-outline-success btn-sm">Lihat Semua</a>
-        </div>
+<div class="card card-soft border-0 shadow-sm mt-4">
+    <div class="card-header bg-transparent border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold mb-0">Tanaman Terbaru</h5>
+        <a href="{{ route('tanaman.index') }}" class="btn btn-light btn-sm px-3 rounded-pill border">Lihat Semua</a>
+    </div>
+    <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table align-middle">
-                <thead>
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
                     <tr>
-                        <th>Tanaman</th>
-                        <th>Lokasi</th>
-                        <th>Tanggal Tanam</th>
-                        <th>Estimasi Panen</th>
-                        <th>Status</th>
+                        <th class="ps-4 py-3 border-0">Tanaman</th>
+                        <th class="py-3 border-0">Lokasi</th>
+                        <th class="py-3 border-0">Tgl Tanam</th>
+                        <th class="py-3 border-0">Estimasi Panen</th>
+                        <th class="pe-4 py-3 border-0 text-center">Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($tanamanTerbaru as $t)
                         @php
                             $today = \Carbon\Carbon::today();
-                            $badge = $t->status;
-                            if ($badge !== 'selesai' && $today->gte($t->estimasi_panen)) { $badge = 'panen'; }
+                            $status = $t->status;
+                            if ($status !== 'selesai' && $today->gte($t->estimasi_panen)) { $status = 'panen'; }
                         @endphp
                         <tr>
-                            <td class="fw-semibold">{{ $t->nama_tanaman }}</td>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-success bg-opacity-10 text-success rounded-3 p-2 me-3">
+                                        <i class="bi bi-flower1"></i>
+                                    </div>
+                                    <div class="fw-bold text-dark">{{ $t->nama_tanaman }}</div>
+                                </div>
+                            </td>
                             <td>{{ $t->lokasi }}</td>
                             <td>{{ $t->tanggal_tanam->toDateString() }}</td>
                             <td>{{ $t->estimasi_panen->toDateString() }}</td>
-                            <td>
-                                <span class="badge badge-soft badge-{{ $badge }}">{{ ucfirst($badge) }}</span>
+                            <td class="pe-4 text-center">
+                                <span class="badge rounded-pill bg-opacity-10 px-3 border
+                                    @if($status === 'aktif') bg-primary text-primary border-primary border-opacity-25
+                                    @elseif($status === 'panen') bg-warning text-warning border-warning border-opacity-25
+                                    @else bg-success text-success border-success border-opacity-25 @endif">
+                                    {{ strtoupper($status) }}
+                                </span>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-muted text-center py-4">Belum ada data.</td>
+                            <td colspan="5" class="text-center py-5 text-muted">Belum ada data tanaman.</td>
                         </tr>
                     @endforelse
                 </tbody>
