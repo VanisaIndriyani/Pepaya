@@ -35,21 +35,10 @@ class DashboardController extends Controller
             })
             ->count();
 
-        $nextPanenTanaman = (clone $tanamanBase)
+        $panenTerdekat = (clone $tanamanBase)
             ->where('status', 'aktif')
             ->orderBy('estimasi_panen')
             ->first();
-
-        $countdownPanen = null;
-        if ($nextPanenTanaman) {
-            $days = $today->diffInDays($nextPanenTanaman->estimasi_panen, false);
-            $countdownPanen = [
-                'nama' => $nextPanenTanaman->nama_tanaman,
-                'lokasi' => $nextPanenTanaman->lokasi,
-                'estimasi' => $nextPanenTanaman->estimasi_panen->toDateString(),
-                'days' => $days,
-            ];
-        }
 
         $labels = [];
         $series = [];
@@ -74,7 +63,7 @@ class DashboardController extends Controller
             'estimasiPanen' => $estimasiPanen,
             'chartLabels' => $labels,
             'chartSeries' => $series,
-            'countdownPanen' => $countdownPanen,
+            'panenTerdekat' => $panenTerdekat,
             'tanamanTerbaru' => $tanamanTerbaru,
         ]);
     }
