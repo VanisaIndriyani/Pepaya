@@ -130,10 +130,7 @@
                         <div class="small text-muted">Pesan</div>
                         <div class="p-3 rounded-4" style="background: rgba(25,135,84,.06); border: 1px solid rgba(25,135,84,.12); white-space: pre-wrap;" id="ndPesan"></div>
                     </div>
-                    <div class="col-12">
-                        <div class="small text-muted">Response Gateway</div>
-                        <pre class="p-3 rounded-4 mb-0" style="background: #0b1220; color:#e2e8f0; border: 1px solid rgba(0,0,0,.08); white-space: pre-wrap;" id="ndResponse"></pre>
-                    </div>
+                   
                 </div>
             </div>
             <div class="modal-footer">
