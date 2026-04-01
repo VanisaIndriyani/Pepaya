@@ -20,8 +20,8 @@
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="small opacity-75 fw-medium">Jadwal Tanam</div>
-                    <div class="bg-white bg-opacity-20 rounded-circle p-2">
-                        <i class="bi bi-calendar-check-fill fs-5"></i>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px);">
+                        <i class="bi bi-calendar-check-fill fs-5 text-white"></i>
                     </div>
                 </div>
                 <h3 class="fw-bold mb-0 text-white">{{ $jadwalTanam->count() }}</h3>
@@ -34,8 +34,8 @@
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="small opacity-75 fw-medium">Estimasi Panen</div>
-                    <div class="bg-white bg-opacity-20 rounded-circle p-2">
-                        <i class="bi bi-basket3-fill fs-5"></i>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px);">
+                        <i class="bi bi-basket3-fill fs-5 text-white"></i>
                     </div>
                 </div>
                 <h3 class="fw-bold mb-0 text-white">{{ $estimasiPanen->count() }}</h3>
@@ -48,8 +48,8 @@
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="small opacity-75 fw-medium">Notifikasi</div>
-                    <div class="bg-white bg-opacity-20 rounded-circle p-2">
-                        <i class="bi bi-whatsapp fs-5"></i>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px);">
+                        <i class="bi bi-whatsapp fs-5 text-white"></i>
                     </div>
                 </div>
                 <h3 class="fw-bold mb-0 text-white">{{ $riwayatNotifikasi->count() }}</h3>
