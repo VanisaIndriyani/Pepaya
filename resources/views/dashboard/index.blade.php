@@ -93,12 +93,7 @@
                 <div class="badge bg-light text-dark px-3 py-2 rounded-pill border">Per Bulan</div>
             </div>
             <div class="card-body p-4">
-                <div style="height: 300px; background: #f9fafb; border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 2px dashed #e5e7eb;">
-                    <div class="text-center">
-                        <i class="bi bi-graph-up fs-1 text-muted opacity-50"></i>
-                        <p class="text-muted mt-2">Grafik Pertumbuhan Muncul di Sini</p>
-                    </div>
-                </div>
+                <canvas id="growthChart" style="max-height: 300px;"></canvas>
             </div>
         </div>
     </div>
@@ -211,33 +206,69 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const labels = @json($chartLabels);
-    const series = @json($chartSeries);
-    const ctx = document.getElementById('growthChart');
-    if (ctx) {
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('growthChart').getContext('2d');
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels,
+                labels: {!! json_encode($chartLabels) !!},
                 datasets: [{
-                    label: 'Jumlah Tanam',
-                    data: series,
+                    label: 'Jumlah Penanaman',
+                    data: {!! json_encode($chartSeries) !!},
                     borderColor: '#198754',
-                    backgroundColor: 'rgba(25,135,84,.15)',
+                    backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                    borderWidth: 3,
                     fill: true,
-                    tension: 0.35,
-                    pointRadius: 3
+                    tension: 0.4,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#198754',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
                 }]
             },
             options: {
                 responsive: true,
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#1a1a1a',
+                        padding: 12,
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 },
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            font: { weight: '500' }
+                        },
+                        grid: {
+                            display: true,
+                            drawBorder: false,
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: { weight: '500' }
+                        }
+                    }
+                }
             }
         });
-    }
+    });
 </script>
 @endpush
 
