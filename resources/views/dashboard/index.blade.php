@@ -20,15 +20,15 @@
 
 <div class="row g-4">
     <div class="col-12 col-md-6 col-xl-3">
-        <div class="card card-soft border-0 shadow-sm overflow-hidden" style="background: linear-gradient(135deg, #198754 0%, #11623d 100%); color: white;">
+        <div class="card card-soft border-0 shadow-sm overflow-hidden h-100" style="background: linear-gradient(135deg, #198754 0%, #11623d 100%); color: white;">
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="bg-white bg-opacity-20 rounded-3 p-3">
-                        <i class="bi bi-tree-fill fs-3"></i>
+                    <div class="rounded-3 d-flex align-items-center justify-content-center" style="width: 52px; height: 52px; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px);">
+                        <i class="bi bi-tree-fill fs-3 text-white"></i>
                     </div>
                     <div class="text-end">
                         <div class="small opacity-75 fw-medium">Total Tanaman</div>
-                        <h2 class="fw-bold mb-0">{{ $totalTanaman }}</h2>
+                        <h2 class="fw-bold mb-0 text-white">{{ $totalTanaman }}</h2>
                     </div>
                 </div>
                 <div class="small opacity-75">Seluruh data tercatat</div>
@@ -36,15 +36,15 @@
         </div>
     </div>
     <div class="col-12 col-md-6 col-xl-3">
-        <div class="card card-soft border-0 shadow-sm overflow-hidden" style="background: linear-gradient(135deg, #0d6efd 0%, #084298 100%); color: white;">
+        <div class="card card-soft border-0 shadow-sm overflow-hidden h-100" style="background: linear-gradient(135deg, #0d6efd 0%, #084298 100%); color: white;">
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="bg-white bg-opacity-20 rounded-3 p-3">
-                        <i class="bi bi-check-circle-fill fs-3"></i>
+                    <div class="rounded-3 d-flex align-items-center justify-content-center" style="width: 52px; height: 52px; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px);">
+                        <i class="bi bi-check-circle-fill fs-3 text-white"></i>
                     </div>
                     <div class="text-end">
                         <div class="small opacity-75 fw-medium">Tanaman Aktif</div>
-                        <h2 class="fw-bold mb-0">{{ $tanamanAktif }}</h2>
+                        <h2 class="fw-bold mb-0 text-white">{{ $tanamanAktif }}</h2>
                     </div>
                 </div>
                 <div class="small opacity-75 text-truncate">Sedang dalam perawatan</div>
@@ -52,15 +52,15 @@
         </div>
     </div>
     <div class="col-12 col-md-6 col-xl-3">
-        <div class="card card-soft border-0 shadow-sm overflow-hidden" style="background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); color: white;">
+        <div class="card card-soft border-0 shadow-sm overflow-hidden h-100" style="background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); color: white;">
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="bg-white bg-opacity-20 rounded-3 p-3">
-                        <i class="bi bi-calendar-event-fill fs-3"></i>
+                    <div class="rounded-3 d-flex align-items-center justify-content-center" style="width: 52px; height: 52px; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px);">
+                        <i class="bi bi-calendar-event-fill fs-3 text-white"></i>
                     </div>
                     <div class="text-end">
                         <div class="small opacity-75 fw-medium">Jadwal (7 Hari)</div>
-                        <h2 class="fw-bold mb-0">{{ $jadwalTanam }}</h2>
+                        <h2 class="fw-bold mb-0 text-white">{{ $jadwalTanam }}</h2>
                     </div>
                 </div>
                 <div class="small opacity-75">Tugas perawatan mendatang</div>
@@ -68,15 +68,15 @@
         </div>
     </div>
     <div class="col-12 col-md-6 col-xl-3">
-        <div class="card card-soft border-0 shadow-sm overflow-hidden" style="background: linear-gradient(135deg, #10b981 0%, #047857 100%); color: white;">
+        <div class="card card-soft border-0 shadow-sm overflow-hidden h-100" style="background: linear-gradient(135deg, #10b981 0%, #047857 100%); color: white;">
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="bg-white bg-opacity-20 rounded-3 p-3">
-                        <i class="bi bi-basket3-fill fs-3"></i>
+                    <div class="rounded-3 d-flex align-items-center justify-content-center" style="width: 52px; height: 52px; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px);">
+                        <i class="bi bi-basket3-fill fs-3 text-white"></i>
                     </div>
                     <div class="text-end">
                         <div class="small opacity-75 fw-medium">Panen (30 Hari)</div>
-                        <h2 class="fw-bold mb-0">{{ $estimasiPanen }}</h2>
+                        <h2 class="fw-bold mb-0 text-white">{{ $estimasiPanen }}</h2>
                     </div>
                 </div>
                 <div class="small opacity-75">Estimasi masa panen</div>
