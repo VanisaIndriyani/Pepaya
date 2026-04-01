@@ -208,30 +208,14 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-end mb-4">
-                        <a href="#" class="small text-success fw-bold text-decoration-none">Lupa Password?</a>
-                    </div>
-
+                 
                     <button type="submit" class="btn btn-login">
                         <span>Masuk ke Sistem</span>
                         <i class="bi bi-arrow-right ms-2"></i>
                     </button>
                 </form>
 
-                <div class="demo-accounts">
-                    <div class="demo-title">
-                        <i class="bi bi-info-circle-fill text-success"></i>
-                        <span>Akun Demo Tersedia</span>
-                    </div>
-                    <div class="demo-item">
-                        <span>Administrator:</span>
-                        <strong>admin@gmail.com / password</strong>
-                    </div>
-                    <div class="demo-item">
-                        <span>User Umum:</span>
-                        <strong>user@gmail.com / password</strong>
-                    </div>
-                </div>
+              
                 
                 <p class="text-center mt-5 mb-0 small text-muted fw-medium">
                     &copy; {{ date('Y') }} Tanam Pepaya System. All rights reserved.
