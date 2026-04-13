@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -16,6 +17,9 @@ class CuacaController extends Controller
         $days = (int) $request->query('days', env('WEATHER_DAYS', 3));
         $days = max(1, min(7, $days));
 
+        $locationName = (string) $request->query('name', env('WEATHER_LOCATION_NAME', 'Timika Jaya'));
+        $locationSub = (string) $request->query('sub', env('WEATHER_LOCATION_SUB', 'Kabupaten Mimika'));
+
         $cacheKey = 'cuaca:openmeteo:'.$lat.':'.$lon.':'.$timezone.':'.$days;
 
         $data = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($lat, $lon, $timezone, $days) {
@@ -25,7 +29,8 @@ class CuacaController extends Controller
                 'timezone' => $timezone,
                 'forecast_days' => $days,
                 'current' => 'temperature_2m,relative_humidity_2m,precipitation,rain,weather_code',
-                'daily' => 'temperature_2m_max,temperature_2m_min,precipitation_sum,rain_sum,weather_code',
+                'hourly' => 'temperature_2m,precipitation_probability,weather_code',
+                'daily' => 'temperature_2m_max,temperature_2m_min,precipitation_sum,rain_sum,weather_code,sunrise,sunset',
             ]);
 
             return [
@@ -38,6 +43,11 @@ class CuacaController extends Controller
 
         $current = (array) ($data['json']['current'] ?? []);
         $daily = (array) ($data['json']['daily'] ?? []);
+        $hourly = (array) ($data['json']['hourly'] ?? []);
+
+        $now = Carbon::now($timezone);
+        $sunsetToday = $this->firstOrNull((array) ($daily['sunset'] ?? []));
+        $sunsetAt = $sunsetToday ? Carbon::parse($sunsetToday, $timezone) : null;
 
         $forecast = [];
         $dates = (array) ($daily['time'] ?? []);
@@ -57,8 +67,14 @@ class CuacaController extends Controller
                 'rain_mm' => $rain[$i],
                 'code' => $codes[$i],
                 'desc' => $this->weatherDescription((int) $codes[$i]),
+                'icon' => $this->weatherIcon((int) $codes[$i]),
             ];
         }
+
+        $todayMax = $forecast[0]['temp_max'] ?? null;
+        $todayMin = $forecast[0]['temp_min'] ?? null;
+
+        $hourlyItems = $this->buildHourlyItems($hourly, $timezone, $now, $sunsetAt);
 
         $recommendations = $this->recommendations($forecast, (float) ($current['precipitation'] ?? 0));
 
@@ -67,8 +83,11 @@ class CuacaController extends Controller
             'lon' => $lon,
             'timezone' => $timezone,
             'days' => $days,
+            'locationName' => $locationName,
+            'locationSub' => $locationSub,
             'ok' => (bool) ($data['ok'] ?? false),
             'error' => $data['error'] ?? null,
+            'now' => $now,
             'current' => [
                 'temp_c' => $current['temperature_2m'] ?? null,
                 'humidity' => $current['relative_humidity_2m'] ?? null,
@@ -76,8 +95,12 @@ class CuacaController extends Controller
                 'rain_mm' => $current['rain'] ?? null,
                 'code' => $current['weather_code'] ?? null,
                 'desc' => $this->weatherDescription((int) ($current['weather_code'] ?? 0)),
+                'icon' => $this->weatherIcon((int) ($current['weather_code'] ?? 0)),
             ],
             'forecast' => $forecast,
+            'todayMax' => $todayMax,
+            'todayMin' => $todayMin,
+            'hourlyItems' => $hourlyItems,
             'recommendations' => $recommendations,
         ]);
     }
@@ -102,6 +125,81 @@ class CuacaController extends Controller
             in_array($code, [96, 99], true) => 'Badai petir + hujan es',
             default => 'Tidak diketahui',
         };
+    }
+
+    private function weatherIcon(int $code): string
+    {
+        return match (true) {
+            $code === 0 => 'bi-sun-fill',
+            in_array($code, [1, 2], true) => 'bi-cloud-sun-fill',
+            $code === 3 => 'bi-cloud-fill',
+            in_array($code, [45, 48], true) => 'bi-cloud-fog2-fill',
+            in_array($code, [51, 53, 55, 56, 57], true) => 'bi-cloud-drizzle-fill',
+            in_array($code, [61, 63, 65, 66, 67], true) => 'bi-cloud-rain-fill',
+            in_array($code, [80, 81, 82], true) => 'bi-cloud-rain-heavy-fill',
+            in_array($code, [71, 73, 75, 77, 85, 86], true) => 'bi-snow',
+            in_array($code, [95, 96, 99], true) => 'bi-cloud-lightning-rain-fill',
+            default => 'bi-cloud-fill',
+        };
+    }
+
+    private function buildHourlyItems(array $hourly, string $timezone, Carbon $now, ?Carbon $sunsetAt): array
+    {
+        $times = (array) ($hourly['time'] ?? []);
+        $temps = (array) ($hourly['temperature_2m'] ?? []);
+        $pops = (array) ($hourly['precipitation_probability'] ?? []);
+        $codes = (array) ($hourly['weather_code'] ?? []);
+
+        $count = min(count($times), count($temps), count($pops), count($codes));
+        if ($count === 0) {
+            return [];
+        }
+
+        $startIndex = 0;
+        for ($i = 0; $i < $count; $i++) {
+            $t = Carbon::parse($times[$i], $timezone);
+            if ($t->greaterThanOrEqualTo($now->copy()->subMinutes(30))) {
+                $startIndex = $i;
+                break;
+            }
+        }
+
+        $items = [];
+        $limit = min($count, $startIndex + 6);
+        for ($i = $startIndex; $i < $limit; $i++) {
+            $t = Carbon::parse($times[$i], $timezone);
+            $items[] = [
+                'type' => 'hour',
+                'time' => $t,
+                'label' => $i === $startIndex ? 'Sekarang' : $t->format('H'),
+                'temp' => $temps[$i],
+                'pop' => $pops[$i] ?? null,
+                'code' => $codes[$i],
+                'icon' => $this->weatherIcon((int) $codes[$i]),
+            ];
+        }
+
+        if ($sunsetAt) {
+            $items[] = [
+                'type' => 'sunset',
+                'time' => $sunsetAt,
+                'label' => $sunsetAt->format('H.i'),
+                'temp' => null,
+                'pop' => null,
+                'code' => null,
+                'icon' => 'bi-sunset-fill',
+                'text' => 'Terbenam',
+            ];
+        }
+
+        usort($items, fn ($a, $b) => $a['time']->getTimestamp() <=> $b['time']->getTimestamp());
+
+        return $items;
+    }
+
+    private function firstOrNull(array $arr): mixed
+    {
+        return count($arr) > 0 ? $arr[0] : null;
     }
 
     private function recommendations(array $forecast, float $currentPrecipMm): array
