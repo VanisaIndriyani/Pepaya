@@ -19,6 +19,7 @@ class CuacaController extends Controller
 
         $locationName = (string) $request->query('name', env('WEATHER_LOCATION_NAME', 'Timika Jaya'));
         $locationSub = (string) $request->query('sub', env('WEATHER_LOCATION_SUB', 'Kabupaten Mimika'));
+        $timezoneLabel = (string) $request->query('tz_label', env('WEATHER_TIMEZONE_LABEL', 'WIT'));
 
         $cacheKey = 'cuaca:openmeteo:'.$lat.':'.$lon.':'.$timezone.':'.$days;
 
@@ -29,7 +30,7 @@ class CuacaController extends Controller
                 'timezone' => $timezone,
                 'forecast_days' => $days,
                 'current' => 'temperature_2m,relative_humidity_2m,precipitation,rain,weather_code',
-                'hourly' => 'temperature_2m,precipitation_probability,weather_code',
+                'hourly' => 'temperature_2m,precipitation_probability,weather_code,soil_moisture_0_to_1cm',
                 'daily' => 'temperature_2m_max,temperature_2m_min,precipitation_sum,rain_sum,weather_code,sunrise,sunset',
             ]);
 
@@ -48,6 +49,8 @@ class CuacaController extends Controller
         $now = Carbon::now($timezone);
         $sunsetToday = $this->firstOrNull((array) ($daily['sunset'] ?? []));
         $sunsetAt = $sunsetToday ? Carbon::parse($sunsetToday, $timezone) : null;
+
+        $soilMoistureNow = $this->getCurrentHourlyValue($hourly, $timezone, $now, 'soil_moisture_0_to_1cm');
 
         $forecast = [];
         $dates = (array) ($daily['time'] ?? []);
@@ -82,6 +85,7 @@ class CuacaController extends Controller
             'lat' => $lat,
             'lon' => $lon,
             'timezone' => $timezone,
+            'timezoneLabel' => $timezoneLabel,
             'days' => $days,
             'locationName' => $locationName,
             'locationSub' => $locationSub,
@@ -93,6 +97,7 @@ class CuacaController extends Controller
                 'humidity' => $current['relative_humidity_2m'] ?? null,
                 'precip_mm' => $current['precipitation'] ?? null,
                 'rain_mm' => $current['rain'] ?? null,
+                'soil_moisture_0_1' => $soilMoistureNow,
                 'code' => $current['weather_code'] ?? null,
                 'desc' => $this->weatherDescription((int) ($current['weather_code'] ?? 0)),
                 'icon' => $this->weatherIcon((int) ($current['weather_code'] ?? 0)),
@@ -195,6 +200,28 @@ class CuacaController extends Controller
         usort($items, fn ($a, $b) => $a['time']->getTimestamp() <=> $b['time']->getTimestamp());
 
         return $items;
+    }
+
+    private function getCurrentHourlyValue(array $hourly, string $timezone, Carbon $now, string $key): mixed
+    {
+        $times = (array) ($hourly['time'] ?? []);
+        $values = (array) ($hourly[$key] ?? []);
+
+        $count = min(count($times), count($values));
+        if ($count === 0) {
+            return null;
+        }
+
+        $index = 0;
+        for ($i = 0; $i < $count; $i++) {
+            $t = Carbon::parse($times[$i], $timezone);
+            if ($t->greaterThanOrEqualTo($now->copy()->subMinutes(30))) {
+                $index = $i;
+                break;
+            }
+        }
+
+        return $values[$index] ?? null;
     }
 
     private function firstOrNull(array $arr): mixed

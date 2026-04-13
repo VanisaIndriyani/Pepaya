@@ -258,7 +258,7 @@
                     <div class="text-muted small">Kondisi saat ini dan indikator cuaca.</div>
                 </div>
                 <span class="badge bg-light text-dark border rounded-pill px-3 py-2">
-                    <i class="bi {{ $current['icon'] }} me-1"></i>{{ $timezone }}
+                    <i class="bi {{ $current['icon'] }} me-1"></i>{{ $timezoneLabel }}
                 </span>
             </div>
 
@@ -277,8 +277,10 @@
                 </div>
                 <div class="col-6 col-md-3">
                     <div class="p-3 rounded-4 border bg-white">
-                        <div class="text-muted small mb-1">Hujan</div>
-                        <div class="fw-bold fs-5">{{ $current['rain_mm'] !== null ? $current['rain_mm'].' mm' : '-' }}</div>
+                        <div class="text-muted small mb-1">Kelembapan Tanah</div>
+                        <div class="fw-bold fs-5">
+                            {{ $current['soil_moisture_0_1'] !== null ? round(((float) $current['soil_moisture_0_1']) * 100).'%': '-' }}
+                        </div>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
