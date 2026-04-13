@@ -10,9 +10,9 @@ class CuacaController extends Controller
 {
     public function index(Request $request)
     {
-        $lat = (float) $request->query('lat', env('WEATHER_LAT', -6.2));
-        $lon = (float) $request->query('lon', env('WEATHER_LON', 106.8));
-        $timezone = (string) $request->query('tz', env('WEATHER_TIMEZONE', 'Asia/Jakarta'));
+        $lat = (float) $request->query('lat', env('WEATHER_LAT', -4.5536));
+        $lon = (float) $request->query('lon', env('WEATHER_LON', 136.8894));
+        $timezone = (string) $request->query('tz', env('WEATHER_TIMEZONE', 'Asia/Jayapura'));
         $days = (int) $request->query('days', env('WEATHER_DAYS', 3));
         $days = max(1, min(7, $days));
 
@@ -128,4 +128,3 @@ class CuacaController extends Controller
         ];
     }
 }
-
