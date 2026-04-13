@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CuacaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\NotifikasiController;
@@ -20,6 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/cuaca', [CuacaController::class, 'index'])->name('cuaca.index');
 
     Route::get('/tanaman', [TanamanController::class, 'index'])->name('tanaman.index');
     Route::post('/tanaman', [TanamanController::class, 'store'])->name('tanaman.store');

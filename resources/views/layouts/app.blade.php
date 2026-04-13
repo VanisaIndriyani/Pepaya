@@ -184,6 +184,10 @@
                     <i class="bi bi-tree-fill"></i>
                     <span>Data Tanaman</span>
                 </a>
+                <a class="nav-link {{ request()->routeIs('cuaca.*') ? 'active' : '' }}" href="{{ route('cuaca.index') }}">
+                    <i class="bi bi-cloud-sun-fill"></i>
+                    <span>Informasi Cuaca</span>
+                </a>
                 <a class="nav-link {{ request()->routeIs('notifikasi.*') ? 'active' : '' }}" href="{{ route('notifikasi.index') }}">
                     <i class="bi bi-whatsapp"></i>
                     <span>Notifikasi</span>
