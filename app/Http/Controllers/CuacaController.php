@@ -30,7 +30,7 @@ class CuacaController extends Controller
                 'timezone' => $timezone,
                 'forecast_days' => $days,
                 'current' => 'temperature_2m,relative_humidity_2m,precipitation,rain,weather_code',
-                'hourly' => 'temperature_2m,precipitation_probability,weather_code,soil_moisture_0_to_1cm',
+                'hourly' => 'temperature_2m,precipitation_probability,weather_code,soil_moisture_0_to_1cm,soil_moisture_1_to_3cm,soil_moisture_3_to_9cm,soil_moisture_9_to_27cm',
                 'daily' => 'temperature_2m_max,temperature_2m_min,precipitation_sum,rain_sum,weather_code,sunrise,sunset',
             ]);
 
@@ -50,7 +50,7 @@ class CuacaController extends Controller
         $sunsetToday = $this->firstOrNull((array) ($daily['sunset'] ?? []));
         $sunsetAt = $sunsetToday ? Carbon::parse($sunsetToday, $timezone) : null;
 
-        $soilMoistureNow = $this->getCurrentHourlyValue($hourly, $timezone, $now, 'soil_moisture_0_to_1cm');
+        $soil = $this->getCurrentSoilMoisture($hourly, $timezone, $now);
 
         $forecast = [];
         $dates = (array) ($daily['time'] ?? []);
@@ -97,7 +97,8 @@ class CuacaController extends Controller
                 'humidity' => $current['relative_humidity_2m'] ?? null,
                 'precip_mm' => $current['precipitation'] ?? null,
                 'rain_mm' => $current['rain'] ?? null,
-                'soil_moisture_0_1' => $soilMoistureNow,
+                'soil_moisture' => $soil['value'],
+                'soil_moisture_depth' => $soil['depth'],
                 'code' => $current['weather_code'] ?? null,
                 'desc' => $this->weatherDescription((int) ($current['weather_code'] ?? 0)),
                 'icon' => $this->weatherIcon((int) ($current['weather_code'] ?? 0)),
@@ -222,6 +223,31 @@ class CuacaController extends Controller
         }
 
         return $values[$index] ?? null;
+    }
+
+    private function getCurrentSoilMoisture(array $hourly, string $timezone, Carbon $now): array
+    {
+        $candidates = [
+            'soil_moisture_0_to_1cm' => '0–1 cm',
+            'soil_moisture_1_to_3cm' => '1–3 cm',
+            'soil_moisture_3_to_9cm' => '3–9 cm',
+            'soil_moisture_9_to_27cm' => '9–27 cm',
+        ];
+
+        foreach ($candidates as $key => $depth) {
+            $value = $this->getCurrentHourlyValue($hourly, $timezone, $now, $key);
+            if ($value !== null) {
+                return [
+                    'value' => $value,
+                    'depth' => $depth,
+                ];
+            }
+        }
+
+        return [
+            'value' => null,
+            'depth' => null,
+        ];
     }
 
     private function firstOrNull(array $arr): mixed

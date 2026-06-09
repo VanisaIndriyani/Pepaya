@@ -279,8 +279,11 @@
                     <div class="p-3 rounded-4 border bg-white">
                         <div class="text-muted small mb-1">Kelembapan Tanah</div>
                         <div class="fw-bold fs-5">
-                            {{ $current['soil_moisture_0_1'] !== null ? round(((float) $current['soil_moisture_0_1']) * 100).'%': '-' }}
+                            {{ $current['soil_moisture'] !== null ? round(((float) $current['soil_moisture']) * 100).'%' : '-' }}
                         </div>
+                        @if($current['soil_moisture_depth'])
+                            <div class="small text-muted mt-1">{{ $current['soil_moisture_depth'] }}</div>
+                        @endif
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
